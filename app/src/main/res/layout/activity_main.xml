@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quiz App"
+        android:text="@string/quiz_app"
         android:textStyle="bold"
         android:textSize="25sp"
         android:padding="16dp"
@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Welcome!"
+                android:text="@string/welcome"
                 android:textStyle="bold"
                 android:textSize="30sp"
                 android:textAlignment="center"
@@ -45,9 +45,11 @@
                 />
 
             <TextView
+                android:id="@+id/enterNameLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Please enter your name."
+                android:text="@string/please_enter_your_name"
+                android:labelFor="@+id/nameInput"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textAlignment="center"
@@ -64,9 +66,10 @@
                >
 
                <androidx.appcompat.widget.AppCompatEditText
+               android:id="@+id/nameInput"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:hint="Your Name"
+                   android:hint="@string/your_name"
                    android:textColorHint="#7a8089"
                    android:inputType="textCapWords"
                    android:textColor="#363a43"
@@ -75,9 +78,10 @@
            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
+                android:id="@+id/buttonStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Start"
+                android:text="@string/button_start"
                 android:textColor="@color/white"
                 android:textAllCaps="true"
                 android:layout_marginTop="20dp"
