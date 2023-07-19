@@ -1,6 +1,10 @@
 package com.rizfirsy.quizot
 
 object Constants {
+
+    const val username: String = "username"
+    const val totalQuestion: String = "total_question"
+    const val totalCorrectAnswer: String = "total_correct_answer"
     fun getQuestions():ArrayList<Question>{
         val questionsList = ArrayList<Question>()
 

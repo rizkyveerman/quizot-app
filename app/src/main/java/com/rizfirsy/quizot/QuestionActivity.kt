@@ -1,5 +1,6 @@
 package com.rizfirsy.quizot
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -10,13 +11,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 
 class QuestionActivity : AppCompatActivity(), View.OnClickListener {
 
+    private var mCorrectAnswer: Int = 0
     private var mCurrentPosition: Int = 1
     private var mQuestionList: ArrayList<Question> ? = null
     private var mSelectedOptionPosition: Int = 0
+    private var mUsername: String ? = null
 
     private var progressBar: ProgressBar ? = null
     private var tvProgress: TextView ? = null
@@ -34,6 +38,8 @@ class QuestionActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
 
+        mUsername = intent.getStringExtra(Constants.username)
+
         progressBar = findViewById(R.id.progress_bar)
         tvProgress = findViewById(R.id.tv_progress)
         tvQuestion = findViewById(R.id.tv_question)
@@ -50,14 +56,15 @@ class QuestionActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionTwo?.setOnClickListener(this)
         tvOptionThree?.setOnClickListener(this)
         tvOptionFour?.setOnClickListener(this)
+        btnSubmit?.setOnClickListener(this)
 
         mQuestionList = Constants.getQuestions()
-        setQuestion(mQuestionList!!)
+        setQuestion()
     }
 
-    private fun setQuestion(questionsList: ArrayList<Question>) {
-        mCurrentPosition = 1
-        val question: Question = questionsList[mCurrentPosition - 1]
+    private fun setQuestion() {
+        defaultOptionsView()
+        val question: Question = mQuestionList!![mCurrentPosition - 1]
         progressBar?.progress = mCurrentPosition
         tvProgress?.text = "$mCurrentPosition / ${progressBar?.max}"
         tvQuestion?.text = question.question
@@ -69,7 +76,7 @@ class QuestionActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionThree?.text = question.optionThree
         tvOptionFour?.text = question.optionFour
 
-        if(mCurrentPosition == questionsList.size){
+        if(mCurrentPosition == mQuestionList!!.size){
             btnSubmit?.text = "FINISH"
         } else {
             btnSubmit?.text = "SUBMIT"
@@ -138,7 +145,75 @@ class QuestionActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_submit -> {
-               // TODO "Implement btn submit"
+
+                if(mSelectedOptionPosition == 0) {
+
+                    mCurrentPosition++
+
+                    when{
+                        mCurrentPosition <= mQuestionList!!.size -> {
+                            setQuestion()
+                        }
+                        else -> {
+                            val intent = Intent(this, ResultActivity::class.java)
+                            intent.putExtra(Constants.username, mUsername)
+                            intent.putExtra(Constants.totalCorrectAnswer, mCorrectAnswer)
+                            intent.putExtra(Constants.totalQuestion, mQuestionList?.size)
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
+                } else {
+                    val question = mQuestionList?.get(mCurrentPosition -1)
+
+                    if(question!!.correctAnswer != mSelectedOptionPosition) {
+                        answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg, "#FFFFFF")
+                    } else {
+                        mCorrectAnswer++
+                    }
+                    answerView(question.correctAnswer, R.drawable.correct_option_border_bg, "#FFFFFF")
+
+                    if(mCurrentPosition == mQuestionList!!.size) {
+                        btnSubmit?.text = "FINISH!"
+                    } else {
+                        btnSubmit?.text = "Next Question"
+                    }
+
+                    mSelectedOptionPosition = 0
+                }
+            }
+        }
+    }
+
+    private fun answerView(answer: Int, drawableView: Int, textColor: String){
+        when(answer){
+            1 -> {
+                tvOptionOne?.background = ContextCompat.getDrawable(
+                    this,
+                    drawableView
+                )
+                tvOptionOne?.setTextColor(Color.parseColor(textColor))
+            }
+            2 -> {
+                tvOptionTwo?.background = ContextCompat.getDrawable(
+                    this,
+                    drawableView
+                )
+                tvOptionTwo?.setTextColor(Color.parseColor(textColor))
+            }
+            3 -> {
+                tvOptionThree?.background = ContextCompat.getDrawable(
+                    this,
+                    drawableView
+                )
+                tvOptionThree?.setTextColor(Color.parseColor(textColor))
+            }
+            4 -> {
+                tvOptionFour?.background = ContextCompat.getDrawable(
+                    this,
+                    drawableView
+                )
+                tvOptionFour?.setTextColor(Color.parseColor(textColor))
             }
         }
     }

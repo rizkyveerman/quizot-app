@@ -130,6 +130,7 @@
             android:layout_marginVertical="10dp"
             android:gravity="center"
             android:textSize="18sp"
+            android:background="@drawable/default_button_border_bg"
             />
 
     </LinearLayout>

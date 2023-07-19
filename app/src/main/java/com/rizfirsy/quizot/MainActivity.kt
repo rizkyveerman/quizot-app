@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +23,14 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG).show()
             } else {
                 val intent = Intent(this, QuestionActivity::class.java)
+
+                // send name to constant object in order to make it available for other activity
+                intent.putExtra(Constants.username, inputName.text.toString())
+
+                // start the targeted activity
                 startActivity(intent)
+
+                // finish current activity
                 finish()
             }
         }
