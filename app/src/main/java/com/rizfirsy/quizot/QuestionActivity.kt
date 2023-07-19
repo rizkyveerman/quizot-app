@@ -147,20 +147,9 @@ class QuestionActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_submit -> {
 
                 if(mSelectedOptionPosition == 0) {
-
-                    mCurrentPosition++
-
                     when{
                         mCurrentPosition <= mQuestionList!!.size -> {
                             setQuestion()
-                        }
-                        else -> {
-                            val intent = Intent(this, ResultActivity::class.java)
-                            intent.putExtra(Constants.username, mUsername)
-                            intent.putExtra(Constants.totalCorrectAnswer, mCorrectAnswer)
-                            intent.putExtra(Constants.totalQuestion, mQuestionList?.size)
-                            startActivity(intent)
-                            finish()
                         }
                     }
                 } else {
@@ -175,7 +164,14 @@ class QuestionActivity : AppCompatActivity(), View.OnClickListener {
 
                     if(mCurrentPosition == mQuestionList!!.size) {
                         btnSubmit?.text = "FINISH!"
+                        val intent = Intent(this, ResultActivity::class.java)
+                        intent.putExtra(Constants.username, mUsername)
+                        intent.putExtra(Constants.totalCorrectAnswer, mCorrectAnswer)
+                        intent.putExtra(Constants.totalQuestion, mQuestionList?.size)
+                        startActivity(intent)
+                        finish()
                     } else {
+                        mCurrentPosition++
                         btnSubmit?.text = "Next Question"
                     }
 
